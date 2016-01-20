@@ -23,16 +23,19 @@ define([
 
             initialize: function () {
                 this.model = new Card();
+                this.model.fetch();
+                // update form
+                var self = this;
+                this.model.bind("change", function() {
+                    self.$el.find('input[name=holder]').val(this.get('holder'));
+                    self.$el.find('input[name=balance]').val(this.get('balance'));
+                });
             },
 
             render: function (app) {
                 this.app = app;
+
                 $(this.el).html(this.template());
-
-                this.model.fetch();
-
-                $(this.el).find('input[name=cardholder]').val(this.model.get('cardholder'));
-                $(this.el).find('input[name=balance]').val(this.model.get('balance'));
 
                 return this;
             },

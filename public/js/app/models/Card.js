@@ -14,7 +14,7 @@ function($, BB) {
 
         defaults: {
             number: '1234',
-            cardholder: '',
+            holder: '',
             balance: ''
         }
     });

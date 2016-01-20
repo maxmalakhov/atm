@@ -1,19 +1,23 @@
 /**
  * Created by max on 1/20/16.
  */
+var databases  = require('../models/database');
+
 var controller = function() {};
 
 controller.prototype = {
-    'checkNumber' : function(entry) {
-        return true;
+    'checkCard' : function(number, handler) {
+        databases.get(number, function (cards) {
+            // check first element
+            handler(cards[0])
+        });
     },
 
-    'checkCode' : function(code) {
-        return true;
-    },
-
-    'getCard' : function(number) {
-        return true;
+    'getCard' : function(number, handler) {
+        databases.get(number, function (cards) {
+            // get first element
+            handler(cards[0])
+        });
     },
 
     'checkDeposit' : function(code) {

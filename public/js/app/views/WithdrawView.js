@@ -42,7 +42,7 @@ function($, _, BB, validation, keyboard, tpl, Withdraw) {
             this.app = app;
             $(this.el).html(this.template());
             // set card number
-            //this.model.set({'number': options.number});
+            this.model.set({'number': options.number});
             // enable validation
             var self = this;
             validation.bind(this, {

@@ -8,47 +8,50 @@ router.post('/', function(req, res) {
     var number = req.param('number');
     var code = req.param('code');
 
-    if(!controller.checkNumber(number)) {
-        res.send({
-            result: false,
-            attr: 'number',
-            error: "Card doesn't exist!"
-        });
-        return;
-    }
-    if(!controller.checkCode(number, code)) {
-        res.send({
-            result: false,
-            attr: 'code',
-            error: "Code doesn't match!"
-        });
-        return;
-    }
-    // succeed
-    res.send({
-        result: true,
-        number: number
-    });
+    controller.checkCard(number, function(card) {
+        if(!card) {
+            res.send({
+                result: false,
+                attr: 'number',
+                error: "Card doesn't exist!"
+            });
+            return;
+        }
 
+        if(card.code !== code) {
+            res.send({
+                result: false,
+                attr: 'code',
+                error: "Code doesn't match!"
+            });
+            return;
+        }
+
+        // succeed
+        res.send({
+            result: true,
+            number: number
+        });
+    });
 });
 
 // details
 router.get('/:number', function(req, res) {
     var number = req.params.number;
 
-    if(!controller.checkNumber(number)) {
-        res.send({
-            result: false,
-            attr: 'number',
-            error: "Card doesn't exist!"
-        });
-        return;
-    }
-    var card = controller.getCard(number);
+    controller.getCard(number, function(card) {
+        if(!card) {
+            res.send({
+                result: false,
+                attr: 'number',
+                error: "Card doesn't exist!"
+            });
+            return;
+        }
 
-    res.send({
-        result: true,
-        card: card
+        // succeed
+        delete card.code;
+        res.send(card);
     });
 });
 

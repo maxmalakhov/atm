@@ -48,8 +48,7 @@ function($, _, BB, validation, keyboard, tpl, Entry) {
                 layout: 'custom',
                 customLayout: {
                     'normal': [
-                        '1 2 3 4 5 6 7 8 9 0 {bksp}',
-                        '{accept}'
+                        '1 2 3 ', '4 5 6', '6 7 8' , '9 0 {bksp} ', ' {accept}'
                     ],
                     'shift': [ '{bksp}','{accept}']
                 }
