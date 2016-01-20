@@ -49,5 +49,5 @@ module.exports = app;
 ////////////////////////
 
 var demo_data = require('./models/demo-data');
-demo_data.populate();
+//demo_data.populate();
 //demo_data.cleanup();
