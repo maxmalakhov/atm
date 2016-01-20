@@ -8,14 +8,14 @@ var database =  function() {};
 
 database.prototype  = {
 
-    'get' : function(number, handler) {
+    'get' : function(number, handler, options) {
 
         pg.connect(connectionString, function(err, client, done) {
             // Handle connection errors
             if(err) {
                 done();
                 console.log(err);
-                handler(err);
+                handler(err, options);
                 return;
             }
 
@@ -29,12 +29,12 @@ database.prototype  = {
 
             query.on('end', function() {
                 done();
-                handler(results);
+                handler(results, options);
             });
         });
     },
 
-    'update' : function(fund, handler) {
+    'update' : function(number, balance) {
 
         pg.connect(connectionString, function(err, client, done) {
             var result = false;
@@ -43,18 +43,10 @@ database.prototype  = {
             if(err) {
                 done();
                 console.log(err);
-                handler(result);
-                return { success: false, data: err};
+                return;
             }
 
-            var result = client.query("update card set values fund = $1", [fund]);
-
-            // After all data is returned, close connection and return results
-            query.on('end', function() {
-                done();
-                handler(result);
-                return  { success: true, data: result};
-            });
+            var result = client.query("update card set balance = $2 where number = $1", [number, balance]);
         });
     }
 }

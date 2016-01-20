@@ -10,6 +10,11 @@ define([
     ],
     function($, _, BB, tpl, Card) {
 
+        function updateForm(self, model) {
+            self.$el.find('input[name=holder]').val(model.get('holder'));
+            self.$el.find('input[name=balance]').val(model.get('balance'));
+        }
+
         return BB.View.extend({
 
             template: _.template(tpl),
@@ -17,18 +22,17 @@ define([
             el: $('#content'),
 
             events: {
-                'click button#withdraw': 'withdraw',
+                'click button#gotoWithdraw': 'gotoWithdraw',
                 'click button#exit': 'exit'
             },
 
             initialize: function () {
                 this.model = new Card();
-                this.model.fetch();
+
                 // update form
                 var self = this;
                 this.model.bind("change", function() {
-                    self.$el.find('input[name=holder]').val(this.get('holder'));
-                    self.$el.find('input[name=balance]').val(this.get('balance'));
+                    updateForm(self, this);
                 });
             },
 
@@ -37,10 +41,13 @@ define([
 
                 $(this.el).html(this.template());
 
+                this.model.fetch();
+                updateForm(this, this.model);
+
                 return this;
             },
 
-            withdraw: function() {
+            gotoWithdraw: function() {
                 event.preventDefault();
 
                 this.app.navigate('withdraw', { number: this.model.get('number') });

@@ -37,11 +37,23 @@ function($, _, BB, validation, keyboard, tpl, Entry) {
 
         initialize: function () {
             this.model = new Entry();
+
+            // enable validation
+            var self = this;
+            validation.bind(this, {
+                valid: function(view, attr) {
+                    self.$el.find('div.'+attr).addClass('has-success');
+                },
+                invalid: function(view, attr, error) {
+                    displayError(self, attr, error);
+                }
+            });
         },
 
         render: function (app) {
             this.app = app;
             $(this.el).html(this.template());
+
             // enable keyboard
             $(this.el).find('input[name=code]').keyboard({
                 lockInput: true,
@@ -53,16 +65,7 @@ function($, _, BB, validation, keyboard, tpl, Entry) {
                     'shift': [ '{bksp}','{accept}']
                 }
             });
-            // enable validation
-            var self = this;
-            validation.bind(this, {
-                valid: function(view, attr) {
-                    self.$el.find('div.'+attr).addClass('has-success');
-                },
-                invalid: function(view, attr, error) {
-                    displayError(self, attr, error);
-                }
-            });
+
             return this;
         },
 

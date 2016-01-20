@@ -55,34 +55,48 @@ router.get('/:number', function(req, res) {
     });
 });
 
+function parse(text) {
+    try {
+        return parseInt(text);
+    } catch(err) {
+        console.error(err);
+    }
+    return 0;
+}
+
 // withdraw
 router.post('/:number', function(req, res) {
     var number = req.params.number;
     var amount = req.param('amount');
 
-    if(!controller.checkNumber(number)) {
-        res.send({
-            result: false,
-            attr: 'number',
-            error: "Card doesn't exist!"
-        });
-        return;
-    }
-    if(!controller.checkDeposit(amount)) {
-        res.send({
-            result: false,
-            attr: 'amount',
-            error: "Doesn't enough funds!"
-        });
-        return;
-    }
+    controller.updateBalance(number, amount, function(card, amount, handler) {
+        if(!card) {
+            res.send({
+                result: false,
+                attr: 'number',
+                error: "Card doesn't exist!"
+            });
+            return;
+        }
 
-    var result = controller.updateDeposit(amount);
+        var balance = parse(card.balance);
+        var amount = parse(amount);
+        if(balance < amount) {
+            res.send({
+                result: false,
+                attr: 'amount',
+                error: "Doesn't enough funds!"
+            });
+            return;
+        }
 
-    // succeed
-    res.send({
-        result: result,
-        number: number
+        handler(number, balance - amount);
+
+        // succeed
+        res.send({
+            result: true,
+            number: number
+        });
     });
 
 });

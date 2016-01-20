@@ -20,12 +20,13 @@ controller.prototype = {
         });
     },
 
-    'checkDeposit' : function(code) {
-        return true;
-    },
-
-    'updateDeposit' : function(code) {
-        return true;
+    'updateBalance' : function(number, amount, handler) {
+        databases.get(number, function (cards, amount) {
+            // get first element
+            handler(cards[0], amount, function(number, amount) {
+                databases.update(number, amount)
+            })
+        }, amount);
     }
 };
 

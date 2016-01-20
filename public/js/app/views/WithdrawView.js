@@ -6,11 +6,10 @@ define([
     'underscore',
     'backbone',
     'validation',
-    'keyboard',
     'text!tpl/WithdrawView.html',
     'app/models/Withdraw'
 ],
-function($, _, BB, validation, keyboard, tpl, Withdraw) {
+function($, _, BB, validation, tpl, Withdraw) {
 
     function displayError(self, attr, error) {
         self.$el.find('div.'+attr).removeClass('has-success');
@@ -30,19 +29,14 @@ function($, _, BB, validation, keyboard, tpl, Withdraw) {
         el: $('#content'),
 
         events: {
+            //'keyup input#amount': 'amount',
             'click button#withdraw': 'submit',
-            'click button#exit': 'exit'
+            'click button#cancel': 'cancel'
         },
 
         initialize: function () {
             this.model = new Withdraw();
-        },
 
-        render: function (app, options) {
-            this.app = app;
-            $(this.el).html(this.template());
-            // set card number
-            this.model.set({'number': options.number});
             // enable validation
             var self = this;
             validation.bind(this, {
@@ -53,6 +47,15 @@ function($, _, BB, validation, keyboard, tpl, Withdraw) {
                     displayError(self, attr, error);
                 }
             });
+        },
+
+        render: function (app, options) {
+            this.app = app;
+            // set card number
+            this.model.set({'number': options.number});
+
+            $(this.el).html(this.template());
+
             return this;
         },
 
@@ -63,8 +66,8 @@ function($, _, BB, validation, keyboard, tpl, Withdraw) {
 
             var model = this.model;
             var amount = this.$el.find('input[name=amount]').val();
-
             model.set('amount', amount);
+
             model.validate();
 
             if(model.isValid()) {
@@ -90,7 +93,7 @@ function($, _, BB, validation, keyboard, tpl, Withdraw) {
             return false;
         },
 
-        exit: function(event) {
+        cancel: function(event) {
             event.preventDefault();
 
             this.app.navigate('card', { number: this.model.get('number') });
