@@ -1,12 +1,12 @@
 .DS_Store
 
 # Images
-images/avatars/
-images/captchas/
-images/smileys/
-images/member_photos/
-images/signature_attachments/
-images/pm_attachments/
+img/avatars/
+img/captchas/
+img/smileys/
+img/member_photos/
+img/signature_attachments/
+img/pm_attachments/
 
 # For security do not publish the following files
 system/expressionengine/config/database.php
@@ -21,3 +21,5 @@ _thumbs/
 node_modules/
 *.iml
 .idea
+
+config/pg-config.js
