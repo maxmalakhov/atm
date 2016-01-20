@@ -10,7 +10,9 @@ require.config({
         backbone: 'lib/backbone-min',
         app: 'js/app',
         text: 'lib/text',
-        tpl: 'tpl'
+        tpl: 'tpl',
+
+        validation: 'lib/backbone-validation-amd-min'
     }
 });
 

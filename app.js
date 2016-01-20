@@ -5,7 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var cards = require('./routes/cards');
+var entry = require('./routes/entry');
 //var deposits = require('./routes/deposits');
 //var withdraw = require('./routes/withdraw');
 
@@ -18,7 +18,7 @@ app.use(bodyParser.urlencoded());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-//app.use('/cards', cards);
+app.use('/enter', entry);
 //app.use('/deposits', deposits);
 //app.use('/withdraw', withdraw);
 

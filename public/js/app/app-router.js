@@ -10,18 +10,22 @@ define([
     return BB.Router.extend({
         routes: {
             ""                  : "entry",
-            "card"              : "card",
+            "card/:id"          : "card",
             "card/:id/deposit"  : "deposit"
         },
 
         initialize: function () {
         },
 
+        navigate: function (url) {
+            window.location = url;
+        },
+
         entry: function() {
             if (!this.entryView) {
                 this.entryView = new EntryView();
             }
-            this.entryView.render();
+            this.entryView.render(this);
         }
     });
 });
