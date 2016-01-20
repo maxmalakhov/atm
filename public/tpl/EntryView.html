@@ -7,8 +7,8 @@
     </div>
     <div class="code form-group has-feedback">
         <label class="control-label" for="code"></label>
-        <input type="password" name="code" id="code" class="form-control" placeholder="Pin code" required
-               onkeypress='return event.charCode >= 48 && event.charCode <= 57' maxlength="4">
+        <input type="keyboard" name="code" id="code" class="form-control" placeholder="Pin code" required
+              readonly="readonly" maxlength="4">
     </div>
     <button id="enter" class="btn btn-lg btn-primary btn-block" type="submit">Enter</button>
 </form>

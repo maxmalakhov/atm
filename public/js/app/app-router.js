@@ -9,16 +9,18 @@ define([
 
     return BB.Router.extend({
         routes: {
-            ""                  : "entry",
-            "card/:id"          : "card",
-            "card/:id/deposit"  : "deposit"
+            ""                  : "entry"
         },
 
         initialize: function () {
         },
 
-        navigate: function (url) {
-            window.location = url;
+        navigate: function (view, params) {
+            switch(view) {
+                case 'enter': this.entry(); return;
+                case 'card': this.card(params); return;
+            }
+
         },
 
         entry: function() {
@@ -26,6 +28,13 @@ define([
                 this.entryView = new EntryView();
             }
             this.entryView.render(this);
+        },
+
+        card: function(params) {
+            if (!this.cardView) {
+                this.cardView = new CardView();
+            }
+            this.cardView.render(this, params);
         }
     });
 });

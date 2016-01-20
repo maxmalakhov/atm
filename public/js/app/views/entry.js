@@ -6,10 +6,11 @@ define([
     'underscore',
     'backbone',
     'validation',
+    'keyboard',
     'text!tpl/EntryView.html',
-    'app/models/card'
+    'app/models/entry'
 ],
-function($, _, BB, validation, tpl, Card) {
+function($, _, BB, validation, keyboard, tpl, Entry) {
 
     return BB.View.extend({
 
@@ -22,12 +23,24 @@ function($, _, BB, validation, tpl, Card) {
         },
 
         initialize: function () {
-            this.model = new Card();
+            this.model = new Entry();
         },
 
         render: function (app) {
             this.app = app;
             $(this.el).html(this.template());
+            // enable keyboard
+            $(this.el).find('input[name=code]').keyboard({
+                lockInput: true,
+                layout: 'custom',
+                customLayout: {
+                    'normal': [
+                        '1 2 3 4 5 6 7 8 9 0 {bksp}',
+                        '{accept}'
+                    ],
+                    'shift': [ '{bksp}','{accept}']
+                }
+            });
             // enable validation
             var self = this;
             validation.bind(this, {
@@ -67,7 +80,7 @@ function($, _, BB, validation, tpl, Card) {
                 model.save().done(
                     function(data) {
                         if(data.result) {
-                            self.app.navigate('/card/'+number);
+                            self.app.navigate('card', number);
                         } else {
                             console.debug(data.message);
                         }

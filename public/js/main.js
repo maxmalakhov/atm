@@ -12,7 +12,8 @@ require.config({
         text: 'lib/text',
         tpl: 'tpl',
 
-        validation: 'lib/backbone-validation-amd-min'
+        validation: 'lib/backbone-validation-amd-min',
+        keyboard: 'lib/jquery.keyboard.min'
     }
 });
 

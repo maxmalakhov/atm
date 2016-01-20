@@ -18,12 +18,14 @@ function($, BB) {
         validation: {
             number: {
                 required: true,
-                rangeLength: [4, 20]
+                rangeLength: [4, 20],
+                pattern: 'digits'
             },
 
             code: {
                 required: true,
-                length: 4
+                length: 4,
+                pattern: 'digits'
             }
         }
     });

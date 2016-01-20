@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var entry = require('./routes/entry');
+var cards = require('./routes/cards');
 //var deposits = require('./routes/deposits');
 //var withdraw = require('./routes/withdraw');
 
@@ -19,7 +20,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/enter', entry);
-//app.use('/deposits', deposits);
+app.use('/card', cards);
 //app.use('/withdraw', withdraw);
 
 /// catch 404 and forward to error handler
