@@ -7,8 +7,7 @@ var bodyParser = require('body-parser');
 
 var entry = require('./routes/entry');
 var cards = require('./routes/cards');
-//var deposits = require('./routes/deposits');
-//var withdraw = require('./routes/withdraw');
+var withdraw = require('./routes/withdraw');
 
 var app = express();
 
@@ -21,7 +20,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/api/enter', entry);
 app.use('/api/card', cards);
-//app.use('/withdraw', withdraw);
+app.use('/api/withdraw', withdraw);
 
 /// catch 404 and forward to error handler
 app.use(function(req, res, next) {

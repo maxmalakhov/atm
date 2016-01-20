@@ -12,6 +12,19 @@ define([
 ],
 function($, _, BB, validation, keyboard, tpl, Entry) {
 
+    function displayError(self, attr, error) {
+        self.$el.find('div.'+attr).removeClass('has-success');
+        self.$el.find('div.'+attr).addClass('has-error');
+        self.$el.find('div.'+attr+' label').html(error);
+    }
+
+    function removeErrors(self) {
+        self.$el.find('div.number label').html('');
+        self.$el.find('div.number').removeClass('has-error');
+        self.$el.find('div.code label').html('');
+        self.$el.find('div.code').removeClass('has-error');
+    }
+
     return BB.View.extend({
 
         template: _.template(tpl),
@@ -48,9 +61,7 @@ function($, _, BB, validation, keyboard, tpl, Entry) {
                     self.$el.find('div.'+attr).addClass('has-success');
                 },
                 invalid: function(view, attr, error) {
-                    self.$el.find('div.'+attr).removeClass('has-success');
-                    self.$el.find('div.'+attr).addClass('has-error');
-                    self.$el.find('div.'+attr+' label').html(error);
+                    displayError(self, attr, error);
                 }
             });
             return this;
@@ -59,18 +70,13 @@ function($, _, BB, validation, keyboard, tpl, Entry) {
         submit: function(event) {
             event.preventDefault();
 
+            removeErrors(this);
+
             var model = this.model;
-
-            // remove errors
-            this.$el.find('div.number label').html('');
-            this.$el.find('div.number').removeClass('has-error');
-            this.$el.find('div.code label').html('');
-            this.$el.find('div.code').removeClass('has-error');
-
             var number = this.cleanup(this.$el.find('input[name=number]').val());
-            this.$el.find('input[name=number]').val(number);
-
             var code = this.$el.find('input[name=code]').val();
+
+            this.$el.find('input[name=number]').val(number);
 
             model.set('number', number);
             model.set('code', code);
@@ -83,7 +89,11 @@ function($, _, BB, validation, keyboard, tpl, Entry) {
                         if(data.result) {
                             self.app.navigate('card', { number: number });
                         } else {
-                            console.debug(data.message);
+                            if(data.attr) {
+                                displayError(self, data.attr, data.error);
+                            } else {
+                                console.debug(data.error);
+                            }
                         }
                     },
                     function (err) {

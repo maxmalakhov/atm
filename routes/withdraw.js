@@ -1,11 +1,11 @@
 var express = require('express');
 var router = express.Router();
 
-var controller  = require('../controllers/entry-controller');
+var controller  = require('../controllers/withdraw-controller');
 
 router.post('/', function(req, res) {
     var number = req.param('number');
-    var code = req.param('code');
+    var amount = req.param('amount');
 
     if(!controller.checkNumber(number)) {
         res.send({
@@ -15,17 +15,20 @@ router.post('/', function(req, res) {
         });
         return;
     }
-    if(!controller.checkCode(number, code)) {
+    if(!controller.checkDeposit(amount)) {
         res.send({
             result: false,
-            attr: 'code',
-            error: "Code doesn't match!"
+            attr: 'amount',
+            error: "Doesn't enough funds!"
         });
         return;
     }
+
+    var result = controller.updateDeposit(amount);
+
     // succeed
     res.send({
-        result: true,
+        result: result,
         number: number
     });
 
