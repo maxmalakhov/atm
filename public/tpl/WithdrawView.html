@@ -1,0 +1,12 @@
+<form class="form-signin">
+    <h2 class="form-signin-heading">Withdraw</h2>
+    <div class="amount form-group  has-feedback">
+        <label class="control-label" for="amount"></label>
+        <input type="text" name="amount" id="amount" class="form-control" placeholder="Amount" required autofocus
+               onkeypress='return event.charCode >= 48 && event.charCode <= 57' maxlength="20">
+    </div>
+    <p>
+        <button id="exit" class="btn btn-lg btn-default " >Cancel</button>
+        <button id="withdraw" class="btn btn-lg btn-primary" type="button">Get Cash</button>
+    </p>
+</form>

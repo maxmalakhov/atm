@@ -7,10 +7,10 @@ define([
     'backbone',
     'validation',
     'keyboard',
-    'text!tpl/EntryView.html',
-    'app/models/entry'
+    'text!tpl/WithdrawView.html',
+    'app/models/Withdraw'
 ],
-function($, _, BB, validation, keyboard, tpl, Entry) {
+function($, _, BB, validation, keyboard, tpl, Withdraw) {
 
     return BB.View.extend({
 
@@ -19,28 +19,19 @@ function($, _, BB, validation, keyboard, tpl, Entry) {
         el: $('#content'),
 
         events: {
-            'click button#enter': 'submit'
+            'click button#withdraw': 'submit',
+            'click button#exit': 'exit'
         },
 
         initialize: function () {
-            this.model = new Entry();
+            this.model = new Withdraw();
         },
 
-        render: function (app) {
+        render: function (app, options) {
             this.app = app;
             $(this.el).html(this.template());
-            // enable keyboard
-            $(this.el).find('input[name=code]').keyboard({
-                lockInput: true,
-                layout: 'custom',
-                customLayout: {
-                    'normal': [
-                        '1 2 3 4 5 6 7 8 9 0 {bksp}',
-                        '{accept}'
-                    ],
-                    'shift': [ '{bksp}','{accept}']
-                }
-            });
+            // set card number
+            //this.model.set({'number': options.number});
             // enable validation
             var self = this;
             validation.bind(this, {
@@ -61,18 +52,13 @@ function($, _, BB, validation, keyboard, tpl, Entry) {
 
             var model = this.model;
 
-            this.$el.find('div.code label').html('');
-            this.$el.find('div.number label').html('');
-            this.$el.find('div.code').removeClass('has-error');
-            this.$el.find('div.number').removeClass('has-error');
+            // remove errors
+            this.$el.find('div.amount label').html('');
+            this.$el.find('div.amount').removeClass('has-error');
 
-            var number = this.cleanup(this.$el.find('input[name=number]').val());
-            this.$el.find('input[name=number]').val(number);
+            var amount = this.$el.find('input[name=amount]').val();
 
-            var code = this.$el.find('input[name=code]').val();
-
-            model.set('number', number);
-            model.set('code', code);
+            model.set('amount', amount);
             model.validate();
 
             if(model.isValid()) {
@@ -80,7 +66,7 @@ function($, _, BB, validation, keyboard, tpl, Entry) {
                 model.save().done(
                     function(data) {
                         if(data.result) {
-                            self.app.navigate('card', number);
+                            self.app.navigate('card', { number: model.get('number') });
                         } else {
                             console.debug(data.message);
                         }
@@ -94,8 +80,12 @@ function($, _, BB, validation, keyboard, tpl, Entry) {
             return false;
         },
 
-        cleanup: function(number) {
-            return number.replace(/-/g,'').replace(/\s/g,'');
+        exit: function(event) {
+            event.preventDefault();
+
+            this.app.navigate('card', { number: this.model.get('number') });
+
+            return false;
         }
     });
 });

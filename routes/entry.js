@@ -3,9 +3,12 @@ var router = express.Router();
 
 /* GET users listing. */
 router.post('/', function(req, res) {
-  res.send({
+    var number = req.param('number');
+    var code = req.param('code');
+
+    res.send({
       result: true,
-      message: 'OK'
+      message: number
   });
 });
 

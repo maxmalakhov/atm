@@ -19,8 +19,8 @@ app.use(bodyParser.urlencoded());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/enter', entry);
-app.use('/card', cards);
+app.use('/api/enter', entry);
+app.use('/api/card', cards);
 //app.use('/withdraw', withdraw);
 
 /// catch 404 and forward to error handler

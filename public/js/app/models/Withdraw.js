@@ -8,23 +8,17 @@ define([
 function($, BB) {
     return BB.Model.extend({
 
-        url: 'enter',
+        url: 'api/withdraw/',
 
         defaults: {
-            number: '',
-            code: ''
+            number: '1234',
+            amount: ''
         },
 
         validation: {
-            number: {
+            amount: {
                 required: true,
-                rangeLength: [4, 20],
-                pattern: 'digits'
-            },
-
-            code: {
-                required: true,
-                length: 4,
+                rangeLength: [1, 20],
                 pattern: 'digits'
             }
         }
