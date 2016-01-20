@@ -8,7 +8,7 @@ define([
 function($, BB) {
     return BB.Model.extend({
 
-        url: 'api/enter',
+        url: 'api/card',
 
         defaults: {
             number: '',

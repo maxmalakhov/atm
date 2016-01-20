@@ -8,7 +8,9 @@ define([
 function($, BB) {
     return BB.Model.extend({
 
-        url: 'api/withdraw/',
+        url: function() {
+            return 'api/card/' + this.get('number');
+        },
 
         defaults: {
             number: '1234',

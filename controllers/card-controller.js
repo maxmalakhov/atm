@@ -8,7 +8,19 @@ controller.prototype = {
         return true;
     },
 
+    'checkCode' : function(code) {
+        return true;
+    },
+
     'getCard' : function(number) {
+        return true;
+    },
+
+    'checkDeposit' : function(code) {
+        return true;
+    },
+
+    'updateDeposit' : function(code) {
         return true;
     }
 };
