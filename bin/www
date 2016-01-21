@@ -2,40 +2,26 @@
 var debug = require('debug')('max-atm');
 var app = require('../app');
 
-app.set('port', process.env.PORT || 3000);
+var config = require("../webpack.config.js");
+var webpack = require("webpack");
 
-// Webpack
-
-var proxy = require('proxy-middleware');
-var url = require('url');
-var webpack = require('webpack');
-var WebpackDevServer = require('webpack-dev-server');
-var config = require('../webpack.config');
-var host = '127.0.0.1';
-
-app.use('/assets', proxy(url.parse('http://localhost:8081/assets')));
-app.get('/*', function(req, res) {
-    res.sendFile(config.resolve.root + '/index.html');
+var compiler = webpack(config);
+compiler.run(function(err, stats) {
+    if(err) {
+        console.log(err);
+        return;
+    }
+    var jsonStats = stats.toJson();
+    if(jsonStats.errors.length > 0) {
+        console.log(jsonStats.errors);
+        return;
+    }
+    if(jsonStats.warnings.length > 0) {
+        console.log(jsonStats.warnings);
+    }
 });
 
-new WebpackDevServer(webpack(config), {
-    contentBase: config.output.path,
-    publicPath: config.output.publicPath,
-    hot: true,
-    noInfo: false,
-    quiet: false,
-    headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Headers': 'X-Requested-With'
-    },
-    stats: {
-        colors: false
-    }
-}).listen(8081, host, function(err) {
-        if (err) {
-            console.log(err);
-        }
-    });
+app.set('port', process.env.PORT || 3000);
 
 var server = app.listen(app.get('port'), function() {
   debug('Express server listening on port ' + server.address().port);
