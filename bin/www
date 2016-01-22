@@ -2,6 +2,8 @@
 var debug = require('debug')('max-atm');
 var app = require('../app');
 
+// Webpack configuration
+
 var config = require("../webpack.config.js");
 var webpack = require("webpack");
 
@@ -20,6 +22,12 @@ compiler.run(function(err, stats) {
         console.log(jsonStats.warnings);
     }
 });
+
+// Demo data
+
+var demo_data = require('../models/demo-data');
+demo_data.populate();
+//demo_data.cleanup();
 
 app.set('port', process.env.PORT || 3000);
 
