@@ -49,6 +49,6 @@ database.prototype  = {
             var result = client.query("update card set balance = $2 where number = $1", [number, balance]);
         });
     }
-}
+};
 
 module.exports = new database();
